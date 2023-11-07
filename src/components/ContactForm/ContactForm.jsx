@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { addContact } from 'redux/contactsSlice';
+import { addContact } from 'redux/operations';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import {
@@ -22,7 +22,7 @@ const PhonebookSchema = Yup.object().shape({
 
 export const ContactForm = () => {
   const dispatch = useDispatch();
-  const currentContacts = useSelector(state => state.contacts.contacts);
+  const currentContacts = useSelector(state => state.contacts.contacts.items);
 
   return (
     <Formik
@@ -38,7 +38,7 @@ export const ContactForm = () => {
         if (isContactExists) {
           alert(`${values.name} is already in the phonebook`);
         } else {
-          dispatch(addContact(values.name, values.number));
+          dispatch(addContact({ name: values.name, phone: values.number }));
           actions.resetForm();
         }
       }}
