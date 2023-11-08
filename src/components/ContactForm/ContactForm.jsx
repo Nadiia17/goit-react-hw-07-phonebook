@@ -22,7 +22,7 @@ const PhonebookSchema = Yup.object().shape({
 
 export const ContactForm = () => {
   const dispatch = useDispatch();
-  const currentContacts = useSelector(state => state.contacts.contacts.items);
+  const currentContacts = useSelector(state => state.contacts.items);
 
   return (
     <Formik

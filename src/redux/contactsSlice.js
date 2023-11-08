@@ -2,11 +2,9 @@ import { createSlice, isAnyOf } from '@reduxjs/toolkit';
 import { addContact, deleteContact, fetchContacts } from './operations';
 
 const initialState = {
-  contacts: {
-    items: [],
-    isLoading: false,
-    error: null,
-  },
+  items: [],
+  isLoading: false,
+  error: null,
 };
 
 const arrThunks = [addContact, deleteContact, fetchContacts];
@@ -14,31 +12,29 @@ const arrThunks = [addContact, deleteContact, fetchContacts];
 const fn = type => arrThunks.map(el => el[type]);
 
 const handlePending = state => {
-  state.contacts.isLoading = true;
+  state.isLoading = true;
 };
 
 const handleRejected = (state, action) => {
-  state.contacts.isLoading = false;
-  state.contacts.error = action.payload;
+  state.isLoading = false;
+  state.error = action.payload;
 };
 
 const handleFulfilled = (state, action) => {
-  state.contacts.isLoading = false;
-  state.contacts.error = null;
+  state.isLoading = false;
+  state.error = null;
 };
 
 const handleFulfilledFetchContacts = (state, action) => {
-  state.contacts.error = null;
+  state.items = action.payload;
 };
 
 const handleFulfilledAddContact = (state, action) => {
-  state.contacts.error = null;
+  state.items.push(action.payload);
 };
 
 const handleFulfilledDelContact = (state, action) => {
-  state.contacts.items = state.contacts.items.filter(
-    item => item.id !== action.payload.id
-  );
+  state.items = state.items.filter(item => item.id !== action.payload.id);
 };
 
 const contactsSlice = createSlice({
