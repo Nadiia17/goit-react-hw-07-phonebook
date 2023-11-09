@@ -7,7 +7,6 @@ import { fetchContacts } from 'redux/operations';
 import { Loader } from 'components/Loader/Loader';
 import toast from 'react-hot-toast';
 import {
-  selectContacts,
   selectError,
   selectIsLoading,
   selectVisibleContacts,
@@ -20,10 +19,8 @@ export const ContactList = () => {
     dispatch(fetchContacts());
   }, [dispatch]);
 
-  const items = useSelector(selectContacts);
   const isLoading = useSelector(selectIsLoading);
   const error = useSelector(selectError);
-  const contacts = items || [];
 
   useEffect(() => {
     if (error) {
