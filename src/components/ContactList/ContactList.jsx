@@ -24,19 +24,14 @@ export const ContactList = () => {
   const isLoading = useSelector(selectIsLoading);
   const error = useSelector(selectError);
   const contacts = items || [];
-  console.log(contacts);
 
   useEffect(() => {
     if (error) {
-      // Викликаємо toast.error лише коли змінюється error
       toast.error(`Error loading contacts: ${error}`);
     }
   }, [error]);
 
   const filteredContacts = useSelector(selectVisibleContacts);
-  console.log('Items:', items);
-  console.log('Is Loading:', isLoading);
-  console.log('Error:', error);
   return (
     <>
       {isLoading && <Loader />}
