@@ -6,6 +6,12 @@ import { useEffect } from 'react';
 import { fetchContacts } from 'redux/operations';
 import { Loader } from 'components/Loader/Loader';
 import toast from 'react-hot-toast';
+import {
+  selectContacts,
+  selectError,
+  selectIsLoading,
+  selectVisibleContacts,
+} from 'redux/selectors';
 
 export const ContactList = () => {
   const dispatch = useDispatch();
@@ -14,25 +20,27 @@ export const ContactList = () => {
     dispatch(fetchContacts());
   }, [dispatch]);
 
-  const { items, isLoading, error } = useSelector(state => state.contacts);
-  // const contacts = useSelector(state => state.contacts.items) || [];
+  const items = useSelector(selectContacts);
+  const isLoading = useSelector(selectIsLoading);
+  const error = useSelector(selectError);
   const contacts = items || [];
-  const filter = useSelector(state => state.filter.filter);
   console.log(contacts);
 
-  if (error) {
-    toast.error(`Error loading contacts: ${error}`);
-  }
+  useEffect(() => {
+    if (error) {
+      // Викликаємо toast.error лише коли змінюється error
+      toast.error(`Error loading contacts: ${error}`);
+    }
+  }, [error]);
 
-  const filteredContacts = contacts.filter(contact =>
-    contact.name.toLowerCase().includes(filter.toLowerCase())
-  );
+  const filteredContacts = useSelector(selectVisibleContacts);
   console.log('Items:', items);
   console.log('Is Loading:', isLoading);
   console.log('Error:', error);
   return (
     <>
       {isLoading && <Loader />}
+
       <List>
         {filteredContacts.map(contact => (
           <Contact key={contact.id}>

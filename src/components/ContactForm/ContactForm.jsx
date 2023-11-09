@@ -9,20 +9,22 @@ import {
   StyledForm,
   StyledLabel,
 } from './ContactForm.styled';
+import { selectContacts } from 'redux/selectors';
+import toast from 'react-hot-toast';
 
 const PhonebookSchema = Yup.object().shape({
   name: Yup.string().min(3).required('Name is required'),
   number: Yup.string()
     .matches(
-      /^\d{3}-\d{2}-\d{2}$/,
-      'Phone number is not valid. Must be XXX-XX-XX'
+      /^\d{3}-\d{3}-\d{4}$/,
+      'Phone number is not valid. Must be XXX-XXX-XXXX'
     )
     .required('Phone number is required'),
 });
 
 export const ContactForm = () => {
   const dispatch = useDispatch();
-  const currentContacts = useSelector(state => state.contacts.items);
+  const currentContacts = useSelector(selectContacts);
 
   return (
     <Formik
@@ -36,10 +38,11 @@ export const ContactForm = () => {
           contact => contact.name.toLowerCase() === values.name.toLowerCase()
         );
         if (isContactExists) {
-          alert(`${values.name} is already in the phonebook`);
+          toast.error(`${values.name} is already in the phonebook`);
         } else {
           dispatch(addContact({ name: values.name, phone: values.number }));
           actions.resetForm();
+          toast.success(`${values.name} added to the phonebook`);
         }
       }}
     >
@@ -52,7 +55,7 @@ export const ContactForm = () => {
 
         <StyledLabel>
           Number
-          <StyledField name="number" placeholder="Enter number XXX-XX-XX" />
+          <StyledField name="number" placeholder="Enter number XXX-ХXX-ХХXX" />
           <StyledErrorMessage name="number" component="div" />
         </StyledLabel>
         <StyledButton type="submit">Add contact</StyledButton>

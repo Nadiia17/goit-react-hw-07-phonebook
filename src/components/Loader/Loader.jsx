@@ -9,8 +9,8 @@ export const Loader = () => (
       width="80"
       ariaLabel="Loading"
       wrapperClass="MagnifyingGlass-wrapper"
-      glassColor="#c0efff"
-      color="#e15b64"
+      glassColor="#f2e9e4"
+      color="#9a8c98"
     />
   </LoaderContainer>
 );
